@@ -12,7 +12,7 @@ require 'torch'
 require 'nn'
 require 'nngraph'
 require 'optim'
-require 'lfs'
+require 'lfs' --NOTE-zyd: LuaFileSystem
 
 require 'util.OneHot'
 require 'util.misc'
@@ -45,7 +45,7 @@ end
 
 -- check that cunn/cutorch are installed if user wants to use the GPU
 if opt.gpuid >= 0 and opt.opencl == 0 then
-    local ok, cunn = pcall(require, 'cunn') --notes-zyd: pcall(func,arg1,...) calls func(arg1,...) in safe mode. Return false if fail.
+    local ok, cunn = pcall(require, 'cunn') --NOTE-zyd: pcall(func,arg1,...) calls func(arg1,...) in safe mode. Return false if fail.
     local ok2, cutorch = pcall(require, 'cutorch')
     if not ok then gprint('package cunn not found!') end
     if not ok2 then gprint('package cutorch not found!') end
@@ -77,10 +77,10 @@ if opt.gpuid >= 0 and opt.opencl == 1 then
     end
 end
 
-torch.manualSeed(opt.seed)
+torch.manualSeed(opt.seed) --NOTE-zyd: Set the seed of the random number generator to the given number.
 
 -- load the model checkpoint
-if not lfs.attributes(opt.model, 'mode') then
+if not lfs.attributes(opt.model, 'mode') then --NOTE-zyd: Returns a table with the file attributes corresponding to filepath.
     gprint('Error: File ' .. opt.model .. ' does not exist. Are you sure you didn\'t forget to prepend cv/ ?')
 end
 checkpoint = torch.load(opt.model)
