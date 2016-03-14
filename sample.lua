@@ -45,7 +45,7 @@ end
 
 -- check that cunn/cutorch are installed if user wants to use the GPU
 if opt.gpuid >= 0 and opt.opencl == 0 then
-    local ok, cunn = pcall(require, 'cunn')
+    local ok, cunn = pcall(require, 'cunn') --notes-zyd: pcall(func,arg1,...) calls func(arg1,...) in safe mode. Return false if fail.
     local ok2, cutorch = pcall(require, 'cutorch')
     if not ok then gprint('package cunn not found!') end
     if not ok2 then gprint('package cutorch not found!') end
