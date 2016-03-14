@@ -101,7 +101,7 @@ for L = 1,checkpoint.opt.num_layers do
     local h_init = torch.zeros(1, checkpoint.opt.rnn_size):double()
     if opt.gpuid >= 0 and opt.opencl == 0 then h_init = h_init:cuda() end
     if opt.gpuid >= 0 and opt.opencl == 1 then h_init = h_init:cl() end
-    table.insert(current_state, h_init:clone())
+    table.insert(current_state, h_init:clone()) --NOTE-zyd: [Tensor] clone() Returns a clone of a tensor. The memory is copied.
     if checkpoint.opt.model == 'lstm' then
         table.insert(current_state, h_init:clone())
     end
@@ -113,7 +113,19 @@ local seed_text = opt.primetext
 if string.len(seed_text) > 0 then
     gprint('seeding with ' .. seed_text)
     gprint('--------------------------')
-    for c in seed_text:gmatch'.' do
+    for c in seed_text:gmatch'.' do  -- NOTE-zyd: string.gmatch(str,pattern):find the matched pattern in str.
+                                     --[[%a: 与任何字母配对  
+                                         %c: 与任何控制符配对(例如\n)  
+                                         %d: 与任何数字配对  
+                                         %l: 与任何小写字母配对  
+                                         %p: 与任何标点(punctuation)配对  
+                                         %s: 与空白字符配对  
+                                         %u: 与任何大写字母配对  
+                                         %w: 与任何字母/数字配对  
+                                         %x: 与任何十六进制数配对  
+                                         %z: 与任何代表0的字符配对  
+                                         %x(此处x是非字母非数字字符): 与字符x配对. 主要用来处理表达式中有功能的字符(^$()%.[]*+-?)的配对问题, 例如%%与%配对 
+                                     ]]--
         prev_char = torch.Tensor{vocab[c]}
         io.write(ivocab[prev_char[1]])
         if opt.gpuid >= 0 and opt.opencl == 0 then prev_char = prev_char:cuda() end
