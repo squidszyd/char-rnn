@@ -4,7 +4,7 @@ function RNN.rnn(input_size, rnn_size, n, dropout)
   
   -- there are n+1 inputs (hiddens on each layer and x)
   local inputs = {}
-  table.insert(inputs, nn.Identity()()) -- x
+  table.insert(inputs, nn.Identity()()) -- x NOTE-zyd: Creates a module that returns whatever is input to it as output. 
   for L = 1,n do
     table.insert(inputs, nn.Identity()()) -- prev_h[L]
 

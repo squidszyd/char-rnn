@@ -1,5 +1,5 @@
 
-local OneHot, parent = torch.class('OneHot', 'nn.Module')
+local OneHot, parent = torch.class('OneHot', 'nn.Module') --NOTE-zyd: OneHot is inherited from nn.Module
 
 function OneHot:__init(outputSize)
   parent.__init(self)
