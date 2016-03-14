@@ -130,7 +130,7 @@ if string.len(seed_text) > 0 then
         io.write(ivocab[prev_char[1]])
         if opt.gpuid >= 0 and opt.opencl == 0 then prev_char = prev_char:cuda() end
         if opt.gpuid >= 0 and opt.opencl == 1 then prev_char = prev_char:cl() end
-        local lst = protos.rnn:forward{prev_char, unpack(current_state)}
+        local lst = protos.rnn:forward{prev_char, unpack(current_state)} --NOTE-zyd: unpack() Receives an array and returns as results all elements from the array
         -- lst is a list of [state1,state2,..stateN,output]. We want everything but last piece
         current_state = {}
         for i=1,state_size do table.insert(current_state, lst[i]) end
