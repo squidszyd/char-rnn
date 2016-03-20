@@ -32,8 +32,7 @@ function RNN.rnn(input_size, rnn_size, n, dropout)
       input_size_L = input_size
     else 
       x = outputs[(L-1)] 
-      if dropout > 0 then x =  The call
-operator takes the parents of the node as arguments, nn.Dropout(dropout)(x) end -- apply dropout, if any
+      if dropout > 0 then x = nn.Dropout(dropout)(x) end -- apply dropout, if any
       input_size_L = rnn_size
     end
 
